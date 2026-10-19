@@ -539,6 +539,39 @@ If the model requires the Responses API for reasoning state, set `capabilities.c
 
 Valid settings values are `"none"`, `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"`, and `"max"`. Use `"none"` in `settings.json` when you need to force reasoning off for an endpoint; the provider setup UI exposes the non-`none` values for thinking-capable models. For chat-completions endpoints that should receive prior thinking back in a dedicated `reasoning_content` field, also set `capabilities.interleaved_reasoning` to `true`. If the endpoint expects the output-token limit as `max_tokens` instead of `max_completion_tokens`, set `capabilities.max_tokens_parameter` to `true`.
 
+For example, [Abstract](https://abstract.inc/docs) serves its models through the Responses API:
+
+```json [settings]
+{
+  "language_models": {
+    "openai_compatible": {
+      "abstract": {
+        "api_url": "https://api.abstract.inc/v1",
+        "available_models": [
+          {
+            "name": "glm-5.3:superfast",
+            "display_name": "GLM 5.3",
+            "max_tokens": 262144,
+            "max_output_tokens": 65536,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": false,
+              "chat_completions": false,
+              "interleaved_reasoning": false,
+              "max_tokens_parameter": false
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+The API key is read from `ABSTRACT_API_KEY`. The other models are `kimi-k3:superfast` and `deepseek-v4-flash:superfast`.
+
 For example, a chat-completions endpoint with the maximum OpenAI-style reasoning effort, streamed thinking, and `max_tokens` output limits can be configured as:
 
 ```json [settings]
